@@ -1,7 +1,0 @@
-import React, { Component } from "react";
-
-import Title from "./Title";
-import Footer from "./Footer";
-
-const config = require("../../../config.json");
-const routes = require('express').Router();
