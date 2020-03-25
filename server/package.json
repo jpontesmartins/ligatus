@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "dev": "run-p dev:**",
+    "dev:server": "nodemon server.js devv",
+    "dev:app": "cd ../client && npm run start"
   },
   "repository": {
     "type": "git",
