@@ -1,4 +1,4 @@
-import dependencies from "./dependencies";
+const dependencies = require("./dependencies");
 
 const getGraph = async (file) => {
     const listOfDependencies = await dependencies.getDependencies(file);

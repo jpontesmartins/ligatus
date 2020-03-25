@@ -1,4 +1,4 @@
-import graph from "./graph";
+const graph = require("./graph");
 
 test("Graph", async () => {
     const file = `${__dirname}/tests/demo2.txt`;
@@ -10,11 +10,11 @@ test("Graph", async () => {
             { "from": 1, "to": 4 },
             { "from": 1, "to": 5 }],
         "nodes": [
-            { "id": 1, "label": "/home/ovelha/dev/cdg/src/domain/tests/demo2.txt" },
+            { "id": 1, "label": "/home/ovelha/dev/quarentena/ligatus/server/domain/graph/tests/demo2.txt" },
             { "id": 2, "label": "react-router-dom" },
             { "id": 3, "label": "fs" },
             { "id": 4, "label": "react-icons/fi" },
-            { "id": 5, "label": "../demo3" }
+            { "id": 5, "label": "../demo" }
         ]
     };
 
