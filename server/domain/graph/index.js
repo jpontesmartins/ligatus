@@ -1,6 +1,8 @@
 const dependencies = require("./dependencies");
 
 const getGraph = async (file) => {
+    console.log("[graph] getGraph(file) listOfDependencies");
+
     const listOfDependencies = await dependencies.getDependencies(file);
     console.log(listOfDependencies);
 
@@ -73,9 +75,6 @@ const findNodeByLabel = (element, nodes) => {
 
     return result;
 }
-
-
-
 
 module.exports = {
     getGraph
