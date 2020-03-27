@@ -10,7 +10,7 @@ test("Graph", async () => {
             { "from": 1, "to": 4 },
             { "from": 1, "to": 5 }],
         "nodes": [
-            { "id": 1, "label": "/home/ovelha/dev/quarentena/ligatus/server/domain/graph/tests/demo2.txt" },
+            { "id": 1, "label": "/home/ovelha/dev/quarentena/ligatus/server/domain/tests/demo2.txt" },
             { "id": 2, "label": "react-router-dom" },
             { "id": 3, "label": "fs" },
             { "id": 4, "label": "react-icons/fi" },

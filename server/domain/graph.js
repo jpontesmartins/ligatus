@@ -69,5 +69,3 @@ const findNodeByLabel = (element, nodes) => {
 module.exports = {
     getGraph
 }
-
-

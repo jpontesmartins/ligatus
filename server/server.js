@@ -18,13 +18,8 @@ app.use((req, res, next) => {
 
 //rotas/controllers
 app.get('/graph', async (req, res) => {
+    const inputDoUsuario = `${__dirname}/domain/tests/demo2.txt`;
 
-    //esse dado é pego pelo req.valor
-    const inputDoUsuario = `${__dirname}/domain/graph/tests/demo2.txt`;
-    console.log("[server.js] - /graph");
-    console.log("[server.js] - " + inputDoUsuario);
-
-    //gateway
     const graph = await gateway.getGraph(inputDoUsuario);
     res.send(graph);
 });
