@@ -2,8 +2,18 @@ const dependencies = require("./dependencies");
 
 const getGraph = async (file) => {
     const listOfDependencies = await dependencies.getDependencies(file);
+    console.log(listOfDependencies);
 
+    //1. aqui eu vejo quais dependencias são arquivos;
+    //2. entro em cada dependencia que for um arquivo;
+    //3. pego as dependencias desse arquivo;
+    //4. ...
+    //acredito que dê para adentrar a todas as "dependencias-file"
+    //para ir montar uma listagem de nodes
     const nodes = generateNodes(listOfDependencies, file);
+
+    //depois de montada toda a lista única de dependências, 
+    //fazer a montagem das arestas (edges)
     const edges = generateEdges(listOfDependencies, nodes);
 
     const graph = {
@@ -52,6 +62,7 @@ const generateEdges = (dependencies, nodes) => {
     return edges;
 }
 
+//poso substituir por findNodeByDependecysName
 const findNodeByLabel = (element, nodes) => {
     let result = "";
     nodes.filter(node => {

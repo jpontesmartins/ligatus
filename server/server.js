@@ -4,8 +4,7 @@ const bodyParser = require('body-parser');
 const port = process.env.PORT || 5000;
 const cors = require("cors");
 
-const serviceGraph = require("./domain/services");
-
+const gateway = require("./gateways");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -18,7 +17,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/graph', function (req, res) {
-    const graph = serviceGraph.getGraph();
+    const graph = gateway.getGraph();
     res.send(graph);
 });
 

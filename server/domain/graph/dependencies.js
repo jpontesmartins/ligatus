@@ -1,4 +1,4 @@
-const repository = require("./repository");
+const source = require("./source");
 
 const DOUBLE_QUOTE = "\"";
 const SINGLE_QUOTE = "\'";
@@ -6,7 +6,7 @@ const REQUIRE = "require";
 const IMPORT = "import";
 
 const getDependencies = async (file) => {
-    const result = await repository.getContentFromFile(file);
+    const result = await source.getContentFromFile(file);
     const fileContent = result.replace(/\r?\n|\r|\t/g, " ");
     const tokens = fileContent.split(" ");
     const dependenciesFromFile = getDependenciesName(tokens);
