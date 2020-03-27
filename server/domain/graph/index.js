@@ -1,24 +1,10 @@
-const dependencies = require("./dependencies");
+const getGraph = (dependencies, file) => {
+    console.log(dependencies);
 
-const getGraph = async (file) => {
-    console.log("[graph] getGraph(file) listOfDependencies");
+    let nodes = generateNodes(dependencies, file)
+    let edges = generateEdges(dependencies, nodes);
 
-    const listOfDependencies = await dependencies.getDependencies(file);
-    console.log(listOfDependencies);
-
-    //1. aqui eu vejo quais dependencias são arquivos;
-    //2. entro em cada dependencia que for um arquivo;
-    //3. pego as dependencias desse arquivo;
-    //4. ...
-    //acredito que dê para adentrar a todas as "dependencias-file"
-    //para ir montar uma listagem de nodes
-    const nodes = generateNodes(listOfDependencies, file);
-
-    //depois de montada toda a lista única de dependências, 
-    //fazer a montagem das arestas (edges)
-    const edges = generateEdges(listOfDependencies, nodes);
-
-    const graph = {
+    let graph = {
         nodes: nodes,
         edges: edges
     }
@@ -27,10 +13,12 @@ const getGraph = async (file) => {
 }
 
 const generateNodes = (dependencies, file) => {
-    
+
     const rootNode = {
         "id": 1,
-        "label": file
+        "label": file,
+        "shape": "image",
+        "image": "https://cdn.discordapp.com/attachments/253635650870444032/650688296183136270/unknown.png"
     };
 
     let nodes = [];
@@ -38,8 +26,10 @@ const generateNodes = (dependencies, file) => {
 
     for (let i = 0; i < dependencies.length; i++) {
         let newNode = {
-            "id": i+2,
-            "label": dependencies[i]
+            "id": i + 2,
+            "label": dependencies[i],
+            "shape": "image",
+            "image": "https://cdn.discordapp.com/attachments/253635650870444032/650688296183136270/unknown.png"
         };
         nodes.push(newNode);
     }

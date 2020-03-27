@@ -16,8 +16,16 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/graph', function (req, res) {
-    const graph = gateway.getGraph();
+//rotas/controllers
+app.get('/graph', async (req, res) => {
+
+    //esse dado é pego pelo req.valor
+    const inputDoUsuario = `${__dirname}/domain/graph/tests/demo2.txt`;
+    console.log("[server.js] - /graph");
+    console.log("[server.js] - " + inputDoUsuario);
+
+    //gateway
+    const graph = await gateway.getGraph(inputDoUsuario);
     res.send(graph);
 });
 

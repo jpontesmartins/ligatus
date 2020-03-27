@@ -1,29 +1,16 @@
-const graph = require("../domain/graph");
+const domainGraph = require("../domain/graph");
+const service = require("../services/fileSystem");
 
-const serviceGraphFromJsonFile = require("../services/grafo.json");
-const serviceGraphFromFileSystem = require("../services/fileSystem.js");
+getGraph = async (file) => {
+    console.log("[gateways/index.js] " + file);
 
-getDependencies = async () => {
-    const file = `${__dirname}/../domain/graph/tests/demo2.txt`;
-    const dep = await serviceGraphFromFileSystem.getDependencies(file);
-    return dep;
-}
+    const dependencies = await service.getDependencies(file);
+    const graph = domainGraph.getGraph(dependencies, file);
 
-// getGraph = async () => {
-//     const file = `${__dirname}/../domain/graph/tests/demo2.txt`;
-//     const result = await graph.getGraph(file);
-//     return result;
-// }
-
-
-//exemplo de chamada pra mostrar o "json"
-getGraph = () => {
-    console.log("Lala");
-    return serviceGraphFromJsonFile;
+    return graph;
 }
 
 module.exports = {
-    getDependencies,
     getGraph
 }
 
