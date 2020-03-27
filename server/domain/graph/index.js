@@ -1,12 +1,10 @@
-const dependencies = require("./dependencies");
+const getGraph = (dependencies, file) => {
+    console.log(dependencies);
 
-const getGraph = async (file) => {
-    const listOfDependencies = await dependencies.getDependencies(file);
+    let nodes = generateNodes(dependencies, file)
+    let edges = generateEdges(dependencies, nodes);
 
-    const nodes = generateNodes(listOfDependencies, file);
-    const edges = generateEdges(listOfDependencies, nodes);
-
-    const graph = {
+    let graph = {
         nodes: nodes,
         edges: edges
     }
@@ -15,10 +13,12 @@ const getGraph = async (file) => {
 }
 
 const generateNodes = (dependencies, file) => {
-    
+
     const rootNode = {
         "id": 1,
-        "label": file
+        "label": file,
+        "shape": "image",
+        "image": "https://cdn.discordapp.com/attachments/253635650870444032/650688296183136270/unknown.png"
     };
 
     let nodes = [];
@@ -26,8 +26,10 @@ const generateNodes = (dependencies, file) => {
 
     for (let i = 0; i < dependencies.length; i++) {
         let newNode = {
-            "id": i+2,
-            "label": dependencies[i]
+            "id": i + 2,
+            "label": dependencies[i],
+            "shape": "image",
+            "image": "https://cdn.discordapp.com/attachments/253635650870444032/650688296183136270/unknown.png"
         };
         nodes.push(newNode);
     }
@@ -52,6 +54,7 @@ const generateEdges = (dependencies, nodes) => {
     return edges;
 }
 
+//poso substituir por findNodeByDependecysName
 const findNodeByLabel = (element, nodes) => {
     let result = "";
     nodes.filter(node => {
@@ -62,9 +65,6 @@ const findNodeByLabel = (element, nodes) => {
 
     return result;
 }
-
-
-
 
 module.exports = {
     getGraph

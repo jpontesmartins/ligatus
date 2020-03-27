@@ -1,7 +1,7 @@
-const graph = require("./graph");
+const graph = require("../graph");
 
 test("Graph", async () => {
-    const file = `${__dirname}/tests/demo2.txt`;
+    const file = `${__dirname}/demo2.txt`;
     const graphResult = await graph.getGraph(file);
     const expectedGraph = {
         "edges": [
