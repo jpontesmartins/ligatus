@@ -2,35 +2,36 @@ const domainGraph = require("../domain/graph");
 const service = require("../services");
 const path = require("path");
 
+let Dependency = require("./Dependency");
+
 let allDependencies = new Set();
+let localDependencies = [];
 
-getGraph = async (file) => {
+getAllDependencies = async (file) => {
+
     const dependencies = await service.getDependencies(file);
+    dependencies.map(d => allDependencies.add(d));
 
-    dependencies.map(async (dep) => {
-        allDependencies.add(dep);
-        let newFile = newDependencyFileFound(dep, file);
-        const subPreGraph = await getGraph(newFile);
-        
-        // if (newFile) {
-        //     const subGraph = await getGraph(newFile);
-        //     subGraph.nodes.map((node) => {
-        //         allDependencies.add(node.label);
-        //     });
-        // }
+    const dependency = new Dependency(file, dependencies);
+    localDependencies.push(dependency);
+
+    dependencies.map(async d => {
+        const possibleNewFile = newDependencyStrFileFound(d, file);
+        if (possibleNewFile) {
+            await getAllDependencies(possibleNewFile);
+            console.log(allDependencies);
+            console.log(localDependencies);
+        }
     });
 
-    
-    const graph = domainGraph.getGraph(dependencies, file);
-    
-    console.log(`=========================================`);
-    console.log(`Dependencies from file: ${file}`);
-    console.log(dependencies);
-    console.log(`Grafo `);
-    console.log(graph);
-    console.log(`=========================================`);
+}
 
-    return graph;
+getGraph = async (file) => {
+    allDependencies = new Set();
+    localDependencies = [];
+    const a = await getAllDependencies(file);
+    console.log("FIM");
+    return null;
 }
 
 module.exports = {
@@ -38,17 +39,17 @@ module.exports = {
 }
 
 
-function newDependencyFileFound(dep, file) {
+function newDependencyStrFileFound(dependency, file) {
     const rootPath = path.dirname(file);
     let newFile = "";
-    const isLocalDependency = dep.includes("./");
-    
+    const isLocalDependency = dependency.includes("./");
+
     if (isLocalDependency) {
-        if (dep.includes("../")) {
-            newFile = rootPath + "/../" + dep.replace("../", "");
-        } 
-        else if (dep.includes("./")) {
-            newFile = rootPath + "/" + dep.replace("./", "");
+        if (dependency.includes("../")) {
+            newFile = rootPath + "/../" + dependency.replace("../", "");
+        }
+        else if (dependency.includes("./")) {
+            newFile = rootPath + "/" + dependency.replace("./", "");
         }
         newFile = newFile + ".txt";
     }
