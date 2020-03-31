@@ -14,7 +14,7 @@ test("Graph", async () => {
             { "id": 2, "label": "react-router-dom" },
             { "id": 3, "label": "fs" },
             { "id": 4, "label": "react-icons/fi" },
-            { "id": 5, "label": "../demo" }
+            { "id": 5, "label": "./demo" }
         ]
     };
 
