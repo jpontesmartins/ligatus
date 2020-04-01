@@ -20,9 +20,10 @@ const getLocalDependencies = async (mainFile) => {
 
         while (localDependencies.length > 0) {
             const fileName = (localDependencies.pop()).replace("./", "/");
-            const localFile = `${__dirname}${fileName}`;
+            const folder = getPathFrom(file);
+            console.log(folder);
 
-            console.log("dep: " + localFile);
+            const localFile = `${folder}${fileName}`;
             const subDependencies = await service.getDependencies(localFile);
             subDependencies.map(subd => {
                 if (isLocalFile(subd)) {
@@ -37,6 +38,10 @@ const getLocalDependencies = async (mainFile) => {
     } catch (error) {
         console.log(error);
     }
+}
+
+function getPathFrom(file) {
+    return path.dirname(file);
 }
 
 function isLocalFile(d) {
