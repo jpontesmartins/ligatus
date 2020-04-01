@@ -1,58 +1,54 @@
-const domainGraph = require("../domain/graph");
 const service = require("../services");
 const path = require("path");
+const Dependency = require("./Dependency");
 
-let Dependency = require("./Dependency");
+const getLocalDependencies = async (mainFile) => {
+    const locals = new Set();
 
-let allDependencies = new Set();
-let localDependencies = [];
+    try {
+        const file = mainFile;
 
-getAllDependencies = async (file) => {
+        const dependencies = await service.getDependencies(file);
+        const localDependencies = [];
+        dependencies.map(d => {
+            if (isLocalFile(d)) {
+                localDependencies.push(d);
+            }
+        });
+        const mainDependency = new Dependency(file, dependencies);
+        locals.add(mainDependency);
 
-    const dependencies = await service.getDependencies(file);
-    dependencies.map(d => allDependencies.add(d));
+        while (localDependencies.length > 0) {
+            const fileName = (localDependencies.pop()).replace("./", "/");
+            const localFile = `${__dirname}${fileName}`;
 
-    const dependency = new Dependency(file, dependencies);
-    localDependencies.push(dependency);
-
-    dependencies.map(async d => {
-        const possibleNewFile = newDependencyStrFileFound(d, file);
-        if (possibleNewFile) {
-            await getAllDependencies(possibleNewFile);
-            console.log(allDependencies);
-            console.log(localDependencies);
+            console.log("dep: " + localFile);
+            const subDependencies = await service.getDependencies(localFile);
+            subDependencies.map(subd => {
+                if (isLocalFile(subd)) {
+                    localDependencies.push(subd);
+                }
+            });
+            const subDependency = new Dependency(localFile, subDependencies);
+            locals.add(subDependency);
         }
-    });
+        return locals;
 
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function isLocalFile(d) {
+    return d.includes("./");
 }
 
 getGraph = async (file) => {
-    allDependencies = new Set();
-    localDependencies = [];
-    const a = await getAllDependencies(file);
-    console.log("FIM");
+    const resultado = await getLocalDependencies(file);
+    console.log(resultado);
     return null;
 }
 
 module.exports = {
     getGraph
 }
-
-
-function newDependencyStrFileFound(dependency, file) {
-    const rootPath = path.dirname(file);
-    let newFile = "";
-    const isLocalDependency = dependency.includes("./");
-
-    if (isLocalDependency) {
-        if (dependency.includes("../")) {
-            newFile = rootPath + "/../" + dependency.replace("../", "");
-        }
-        else if (dependency.includes("./")) {
-            newFile = rootPath + "/" + dependency.replace("./", "");
-        }
-        newFile = newFile + ".txt";
-    }
-    return newFile;
-}
-
