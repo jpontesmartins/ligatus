@@ -16,6 +16,8 @@ app.get('/graph', async (req, res) => {
     console.log(inputDoUsuario);
 
     const graph = await gateway.getGraph(inputDoUsuario);
+    console.log(graph);
+    
     res.send(graph);
 });
 

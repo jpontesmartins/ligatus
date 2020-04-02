@@ -14,20 +14,20 @@ const getDependencies = async file => {
 }
 
 const getDependenciesName = tokens => {
-    const importsAndRequires = tokens.filter(token => getImportsAndRequires(token));
+    const importsAndRequires = tokens.filter(token => isImportOrRequire(token));
 
-    let resultArray = [];
+    let dependencies = [];
     importsAndRequires.map(token => {
         if (hasStringDelimiter(token) && token.includes(REQUIRE)) {
             const lastIndexOfQuote = getLastStringDelimiter(token);
             const dependencysName = token.substring(9, lastIndexOfQuote);
-            resultArray.push(dependencysName);
+            dependencies.push(dependencysName);
         } else if (hasStringDelimiter(token)) {
             const dependencysName = token.substring(1, token.length - 2);
-            resultArray.push(dependencysName);
+            dependencies.push(dependencysName);
         }
     });
-    return resultArray;
+    return dependencies;
 }
 
 const getLastStringDelimiter = token => {
@@ -42,7 +42,7 @@ const hasStringDelimiter = token => {
     return (token.includes(SINGLE_QUOTE) || token.includes(DOUBLE_QUOTE));
 }
 
-const getImportsAndRequires = token => {
+const isImportOrRequire = token => {
     return token.includes(IMPORT) || token.includes(DOUBLE_QUOTE) || token.includes(REQUIRE);
 }
 
