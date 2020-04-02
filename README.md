@@ -1,7 +1,7 @@
 ligatus
 ===
 
-Mostrar um grafo de dependências de um arquivo. 
+Mostra um grafo de dependências a partir de um arquivo inicial. 
 
 # Instalação
 
@@ -20,7 +20,7 @@ $ npm run dev
 ```
 
 ## Acessando a aplicação
-- O servidor backend estará acessível via porta 5000 (apenas localmente, utilizando proxy, em produção não é necessário se preocupar com isso)
+- O servidor backend estará acessível via porta 5000
     ```
     http://localhost:5000/
     ```
@@ -29,16 +29,7 @@ $ npm run dev
     ```
     http://localhost:8080/
     ```
-    
-# Links da aplicação
 
-## Homologacao
-
-Ambiente de homologação
-
-## Produção
-
-Ambiente oficial
 
 
 

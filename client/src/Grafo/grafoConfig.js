@@ -1,6 +1,12 @@
 export const options = {
     layout: {
-      hierarchical: false
+      hierarchical: {
+        enabled: true,
+        direction: "LR",
+        sortMethod: "directed",
+
+      }
+      
     },
     edges: {
       color: {
@@ -14,13 +20,6 @@ export const options = {
         type: "dynamic",
         roundness: 0.5
       }
-    },
-    physics: {
-      barnesHut: {
-        damping: 1,
-        avoidOverlap: 0.1
-      },
-      minVelocity: 0.75
     }
   
   };

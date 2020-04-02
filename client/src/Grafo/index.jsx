@@ -20,28 +20,15 @@ class Grafo extends Component {
   }
 
   render() {
-    const { grafo, teste } = this.state;
-
-    const containerGraph = {
-        backgroundColor: "#FFF",
-        marginBottom: "10px",
-        width: "700px",
-        height: "500px",
-        marginTop: "25px",
-        marginLeft: "50px",
-        boxShadow: "0 4px 8px 0 #444"
-    }
+    const { grafo } = this.state;
 
     const graphStyle = { height: "100%" };
     
     const container = {
-        backgroundColor: "#FFF",
-        marginBottom: "10px",
-        width: "700px",
-        height: "500px",
-        marginTop: "25px",
-        marginLeft: "50px",
-        boxShadow: "0 4px 8px 0 #444"
+        backgroundColor: "#FF",
+        height: "90vh",
+        boxShadow: "0 2px 8px 0 #444",
+        margin: "10px"
     }
     
     return (

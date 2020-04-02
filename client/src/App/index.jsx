@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import axios from "axios";
-import grafo2 from './grafo.json';
+
 import Grafo from '../Grafo';
 
 class App extends Component {
