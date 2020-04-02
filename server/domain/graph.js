@@ -1,8 +1,6 @@
 const getGraph = (dependencies, file) => {
-    console.log(dependencies);
-
-    let nodes = generateNodes(dependencies, file)
-    let edges = generateEdges(dependencies, nodes);
+    const nodes = generateNodes(dependencies, file);
+    const edges = generateEdges(dependencies, nodes);
 
     let graph = {
         nodes: nodes,

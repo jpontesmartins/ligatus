@@ -14,16 +14,6 @@ $ npm install
 
 # Subindo a aplicação localmente
 
-## Variáveis de ambiente
-
-Criar arquivo .env contendo as seguintes variáveis de ambiente:
-
-    DBUSER=usuario
-    DBHOST=host
-    DBNAME=name
-    DBPASS=pass
-    DBPORT=port
-
 Dentro do diretório ``` /server ``` executar:
 ```
 $ npm run dev

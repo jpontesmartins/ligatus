@@ -1,10 +1,10 @@
-const dependencies = require("../dependencies");
+const dependencies = require("./server/domain/dependencies");
 
 test("Dependencies from file", async () => {
     const file = `${__dirname}/demo2.txt`;
     const expectedDependencies = ['react-router-dom', 
         'fs', 'react-icons/fi', 
-        '../demo'];
+        './demo'];
 
     const dependenciesFromFile = await dependencies.getDependencies(file);
 
