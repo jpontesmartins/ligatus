@@ -13,10 +13,10 @@ app.use(cors());
 //rotas/controllers
 app.get('/graph', async (req, res) => {
     const inputDoUsuario = `${__dirname}/domain/tests/demo2.txt`;
-    console.log(inputDoUsuario);
+    // console.log(inputDoUsuario);
 
     const graph = await gateway.getGraph(inputDoUsuario);
-    console.log(graph);
+    // console.log(graph);
     
     res.send(graph);
 });
