@@ -1,6 +1,5 @@
 const path = require("path");
 
-const service = require("../services");
 const Dependency = require("./Dependency");
 
 class ManageDependencies {

@@ -1,9 +1,12 @@
-const serviceFileSystem = require("./fileSystem");
+class Service {
+    constructor(service) {
+        this.service = service;
+    }
 
-const getDependencies = async file => {
-    return await serviceFileSystem.getDependencies(file);
+    getDependencies = async file => {
+        return await this.service.getDependencies(file);
+    }
+
 }
 
-module.exports = {
-    getDependencies
-}
+module.exports = Service;
