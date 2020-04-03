@@ -1,17 +1,14 @@
-const service = require("../services");
-const path = require("path");
-
 const ManageDependencies = require("../domain/ManageDependencies");
 const ManageGraph = require("../domain/ManageGraph");
 
+const Service = require("../services/");
+const fileSystemService = require("../services/fileSystem");
+
 getGraph = async (file) => {
-    const manageDependencies = new ManageDependencies(file);
-    const local = await manageDependencies.getLocalDependencies();
-    const all = manageDependencies.getAllDependencies();
-
-    const manageGraph = new ManageGraph(file, all, local);
-    let graph = manageGraph.create();
-
+    const service = new Service(fileSystemService);
+    const manageDependencies = new ManageDependencies(file, service);
+    const manageGraph = new ManageGraph(manageDependencies);
+    const graph = manageGraph.create();
     return graph;
 }
 
