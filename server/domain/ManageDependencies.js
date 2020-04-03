@@ -55,7 +55,6 @@ class ManageDependencies {
         return filenameWithPath;
     }
 
-
     getAllDependencies = () => {
         this.locals.forEach(localDependency => {
             localDependency.dependencies.map(dep => {
@@ -72,7 +71,6 @@ class ManageDependencies {
         });
         return this.allDependencies;
     }
-
 
 }
 

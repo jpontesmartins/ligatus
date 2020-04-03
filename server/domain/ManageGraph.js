@@ -1,11 +1,16 @@
 const path = require("path");
 const service = require("../services");
 
+const ManageDependencies = require("./ManageDependencies");
+
 class ManageGraph {
-    constructor(file, all, local) {
-        this.file = file;
-        this.all = all;
-        this.local = local;
+    // constructor(file, all, local) {
+    constructor(manageDependencies) {
+        this.file = manageDependencies.file,
+        this.manageDependencies = manageDependencies
+        
+        this.local = [];
+        this.all = [];
 
         this.nodes = new Map();
         this.nodes.set(this.file, 1);
@@ -14,7 +19,10 @@ class ManageGraph {
         this.graph = {};
     }
 
-    create = () => {
+    create = async () => {
+        this.local = await this.manageDependencies.getLocalDependencies();
+        this.all = this.manageDependencies.getAllDependencies();
+        
         this.generateNodes();
 
         this.local.forEach(localDependency => {
