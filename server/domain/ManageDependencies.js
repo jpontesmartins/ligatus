@@ -3,26 +3,26 @@ const path = require("path");
 const Dependency = require("./Dependency");
 
 class ManageDependencies {
+
     constructor(file, service) {
         this.file = file;
-        this.localDependencies = [];
-        this.allDependencies = new Set();
-        this.locals = new Set();
-        this.nodes;
+        this.all = new Set();
+        this.local = new Set();
 
+        this.dependencies = [];
+        
         this.service = service;
     }
 
     getLocalDependencies = async () => {
         try {
-            const dependency = await this.createDependency(this.file);
-            this.locals.add(dependency);
+            await this.createDependency(this.file);
 
-            while (this.localDependencies.length > 0) {
-                const dependency = await this.createDependency(this.getAbsoluteFilename());
-                this.locals.add(dependency);
+            while (this.dependencies.length > 0) {
+                await this.createDependency(this.getAbsoluteFilename());
             }
-            return this.locals;
+            
+            return this.local;
 
         } catch (error) {
             console.log(error);
@@ -33,7 +33,7 @@ class ManageDependencies {
         const dependencies = await this.service.getDependencies(file);
         dependencies.map(d => {
             if (this.isLocalFile(d)) {
-                this.localDependencies.push(d);
+                this.dependencies.push(d);
             }
         });
         return dependencies;
@@ -46,31 +46,33 @@ class ManageDependencies {
     createDependency = async (file) => {
         const dependencies = await this.getDependenciesFromFile(file);
         const dependency = new Dependency(file, dependencies);
+
+        this.local.add(dependency);
         return dependency;
     }
 
-    getAbsoluteFilename() {
-        const fileName = (this.localDependencies.pop()).replace("./", "/");
+    getAbsoluteFilename = () => {
+        const fileName = (this.dependencies.pop()).replace("./", "/");
         const filenameWithPath = `${path.dirname(this.file)}${fileName}`;
 
         return filenameWithPath;
     }
 
     getAllDependencies = () => {
-        this.locals.forEach(localDependency => {
+        this.local.forEach(localDependency => {
             localDependency.dependencies.map(dep => {
                 let filenameWithPath = "";
                 if (this.isLocalFile(dep)) {
                     const dir = path.dirname(localDependency.file);
                     filenameWithPath = `${dir}${dep.replace("./", "/")}`;
-                    this.allDependencies.add(filenameWithPath);
+                    this.all.add(filenameWithPath);
                 }
                 else {
-                    this.allDependencies.add(dep);
+                    this.all.add(dep);
                 }
             });
         });
-        return this.allDependencies;
+        return this.all;
     }
 
 }

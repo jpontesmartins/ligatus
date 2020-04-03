@@ -3,23 +3,18 @@ class ManageGraph {
     constructor(manageDependencies) {
         this.file = manageDependencies.file,
         this.manageDependencies = manageDependencies
-        this.local = [];
-        this.all = [];
 
         this.nodes = new Map();
-        this.nodes.set(this.file, 1);
-        
         this.edges = [];
         this.graph = {};
     }
 
     create = async () => {
-        this.local = await this.manageDependencies.getLocalDependencies();
-        this.all = this.manageDependencies.getAllDependencies();
-        
-        this.generateNodes();
+        const locals = await this.manageDependencies.getLocalDependencies();
+        const all = this.manageDependencies.getAllDependencies();
+        this.generateNodes(all);
 
-        this.local.forEach(localDependency => {
+        locals.forEach(localDependency => {
             const from = this.nodes.get(localDependency.file);
             const to = this.generateEdgesListFromFile(localDependency);
             this.generateJsonEdges(to, from);
@@ -65,9 +60,11 @@ class ManageGraph {
         return graphNodes;
     }
 
-    generateNodes() {
+    generateNodes(all) {
+        this.nodes = new Map();
+        this.nodes.set(this.file, 1);
         let nodeKey = 2;
-        this.all.forEach(dep => {
+        all.forEach(dep => {
             this.nodes.set(dep, nodeKey);
             nodeKey++;
         });
