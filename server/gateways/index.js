@@ -1,6 +1,3 @@
-const service = require("../services");
-const path = require("path");
-
 const ManageDependencies = require("../domain/ManageDependencies");
 const ManageGraph = require("../domain/ManageGraph");
 
@@ -11,6 +8,8 @@ getGraph = async (file) => {
 
     const manageGraph = new ManageGraph(file, all, local);
     let graph = manageGraph.create();
+
+    console.log(graph.nodes);
 
     return graph;
 }

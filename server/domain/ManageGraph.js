@@ -6,18 +6,53 @@ class ManageGraph {
         this.file = file;
         this.all = all;
         this.local = local;
+
+        this.nodes = new Map();
+        this.nodes.set(this.file, 1);
+        
+        this.edges = [];
+        this.graph = {};
     }
 
     create = () => {
-        const nodes = new Map();
-        nodes.set(this.file, 1);
-        let nodeKey = 2;
-        this.all.forEach(dep => {
-            nodes.set(dep, nodeKey);
-            nodeKey++;
+        this.generateNodes();
+
+        this.local.forEach(localDependency => {
+            const from = this.nodes.get(localDependency.file);
+            const to = this.generateDependeciesListFromFile(localDependency);
+            this.generateJsonEdges(to, from);
         });
+
+        this.graph = {
+            nodes: this.generateJsonNodes(),
+            edges: this.edges
+        };
+
+        return this.graph;
+    }
+
+
+    generateJsonEdges(to, from) {
+        to.map(dependency => {
+            const edge = {
+                from: from,
+                to: this.nodes.get(dependency)
+            };
+            this.edges.push(edge);
+        });
+    }
+
+    generateDependeciesListFromFile(file) {
+        const to = [];
+        file.dependencies.map(dependency => {
+            to.push(dependency);
+        });
+        return to;
+    }
+
+    generateJsonNodes() {
         let graphNodes = [];
-        nodes.forEach((nodeId, key) => {
+        this.nodes.forEach((nodeId, key) => {
             const graphNode = {
                 id: nodeId,
                 label: key,
@@ -26,29 +61,16 @@ class ManageGraph {
             };
             graphNodes.push(graphNode);
         });
-        let graph = {};
-        let edges = [];
-        this.local.forEach(localDep => {
-            const from = nodes.get(localDep.file);
-            const to = [];
-            localDep.dependencies.map(dependency => {
-                to.push(dependency);
-            });
-            to.map(dep => {
-                const edge = {
-                    from: from,
-                    to: nodes.get(dep)
-                };
-                edges.push(edge);
-            });
-            graph = {
-                nodes: graphNodes,
-                edges: edges
-            };
-        });
-        return graph;
+        return graphNodes;
     }
 
+    generateNodes() {
+        let nodeKey = 2;
+        this.all.forEach(dep => {
+            this.nodes.set(dep, nodeKey);
+            nodeKey++;
+        });
+    }
 }
 
 module.exports = ManageGraph;
