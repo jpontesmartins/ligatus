@@ -1,57 +1,12 @@
 const service = require("../services");
 const path = require("path");
+const Graph = require("../domain/Graph");
 
 const Dependency = require("./Dependency");
 
-const getLocalDependencies = async (mainFile) => {
-    const locals = new Set();
-
-    try {
-        const file = mainFile;
-        const localDependencies = [];
-
-        //refatorar para não passar o 'localDependencies'
-        const dependencies = await getDependenciesFromFile(file, localDependencies);
-        const dependency = new Dependency(file, dependencies);
-        locals.add(dependency);
-
-        while (localDependencies.length > 0) {
-            const fileName = (localDependencies.pop()).replace("./", "/");
-            const localFile = `${getPathFrom(file)}${fileName}`;
-
-            const dependencies = await getDependenciesFromFile(localFile, localDependencies);
-            const dependency = new Dependency(localFile, dependencies);
-            locals.add(dependency);
-        }
-
-        return locals;
-
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-const getDependenciesFromFile = async (file, localDependencies) => {
-    const dependencies = await service.getDependencies(file);
-    dependencies.map(d => {
-        if (isLocalFile(d)) {
-            localDependencies.push(d);
-        }
-    });
-    return dependencies;
-}
-
-const getPathFrom = (file) => {
-    return path.dirname(file);
-}
-
-const isLocalFile = (dependency) => {
-    return dependency.includes("./");
-}
-
 getGraph = async (file) => {
-    const localDependencies = await getLocalDependencies(file);
-    console.log(localDependencies);
+    const meuGrafo = new Graph(file);
+    const localDependencies = await meuGrafo.getLocalDependencies();
 
     const allDependencies = getAllDependencies(localDependencies);
     // console.log(allDependencies);
@@ -95,8 +50,6 @@ getGraph = async (file) => {
             edges.push(edge);
         });
 
-        // console.log(edges);
-
         graph = {
             nodes: graphNodes,
             edges: edges
@@ -107,8 +60,9 @@ getGraph = async (file) => {
     return graph;
 }
 
-module.exports = {
-    getGraph
+
+const isLocalFile = (dependency) => {
+    return dependency.includes("./");
 }
 
 function getAllDependencies(localDependencies) {
@@ -127,4 +81,10 @@ function getAllDependencies(localDependencies) {
         });
     });
     return allDependencies;
+}
+
+
+
+module.exports = {
+    getGraph
 }

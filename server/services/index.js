@@ -1,7 +1,7 @@
 const serviceFileSystem = require("./fileSystem");
 
 const getDependencies = async file => {
-    return serviceFileSystem.getDependencies(file);
+    return await serviceFileSystem.getDependencies(file);
 }
 
 module.exports = {
