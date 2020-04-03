@@ -4,12 +4,14 @@ const service = require("../services");
 const Dependency = require("./Dependency");
 
 class ManageDependencies {
-    constructor(file) {
+    constructor(file, service) {
         this.file = file;
         this.localDependencies = [];
         this.allDependencies = new Set();
         this.locals = new Set();
         this.nodes;
+
+        this.service = service;
     }
 
     getLocalDependencies = async () => {
@@ -29,7 +31,7 @@ class ManageDependencies {
     }
 
     getDependenciesFromFile = async (file) => {
-        const dependencies = await service.getDependencies(file);
+        const dependencies = await this.service.getDependencies(file);
         dependencies.map(d => {
             if (this.isLocalFile(d)) {
                 this.localDependencies.push(d);
