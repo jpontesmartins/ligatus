@@ -13,7 +13,6 @@ class Dependency {
         return dependency.includes("./");
     }
 
-
     getDep = () => {
         return this.dependencies;
     }

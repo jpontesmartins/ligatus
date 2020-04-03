@@ -1,14 +1,8 @@
-const path = require("path");
-const service = require("../services");
-
-const ManageDependencies = require("./ManageDependencies");
-
 class ManageGraph {
-    // constructor(file, all, local) {
+    
     constructor(manageDependencies) {
         this.file = manageDependencies.file,
         this.manageDependencies = manageDependencies
-        
         this.local = [];
         this.all = [];
 
@@ -27,7 +21,7 @@ class ManageGraph {
 
         this.local.forEach(localDependency => {
             const from = this.nodes.get(localDependency.file);
-            const to = this.generateDependeciesListFromFile(localDependency);
+            const to = this.generateEdgesListFromFile(localDependency);
             this.generateJsonEdges(to, from);
         });
 
@@ -39,7 +33,6 @@ class ManageGraph {
         return this.graph;
     }
 
-
     generateJsonEdges(to, from) {
         to.map(dependency => {
             const edge = {
@@ -50,7 +43,7 @@ class ManageGraph {
         });
     }
 
-    generateDependeciesListFromFile(file) {
+    generateEdgesListFromFile(file) {
         const to = [];
         file.dependencies.map(dependency => {
             to.push(dependency);

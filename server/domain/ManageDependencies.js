@@ -1,7 +1,7 @@
 const path = require("path");
 
 const service = require("../services");
-const Dependency = require("../gateways/Dependency");
+const Dependency = require("./Dependency");
 
 class ManageDependencies {
     constructor(file) {
