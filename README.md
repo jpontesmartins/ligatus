@@ -3,6 +3,10 @@ ligatus
 
 Mostra um grafo de dependências a partir de um arquivo inicial. 
 
+# Próximos passos
+- Melhorar testes
+- Usar nos meus projetos
+
 # Instalação
 
 ```
