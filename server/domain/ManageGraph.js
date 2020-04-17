@@ -70,8 +70,6 @@ class ManageGraph {
         this.nodes = new Map();
         this.nodes.set(this.file, 1);
         let nodeKey = 2;
-        console.log("all");
-        console.log(all);
 
         all.forEach(dep => {
             this.nodes.set(dep, nodeKey);
