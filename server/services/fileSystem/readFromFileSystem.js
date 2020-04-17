@@ -4,7 +4,8 @@ const getContentFromFile = (file) => {
     const promise = new Promise((resolve, reject) => {
         fs.readFile(file, (err, data) => {
             if (data) {
-                resolve(data.toString());
+                const lines = data.toString().split("\n");
+                resolve(lines);
             } else {
                 reject(err);
             }

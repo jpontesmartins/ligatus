@@ -1,51 +1,52 @@
 const readSystemFile = require("./readFromFileSystem");
-
-const DOUBLE_QUOTE = "\"";
-const SINGLE_QUOTE = "\'";
-const REQUIRE = "require";
-const IMPORT = "import";
+const _ = require("lodash");
 
 const getDependencies = async file => {
-    const result = await readSystemFile.getContentFromFile(file);
-    const fileContent = result.replace(/\r?\n|\r|\t/g, " ");
-    const tokens = fileContent.split(" ");
-    const dependenciesFromFile = getDependenciesName(tokens);
+    const fileContent = await readSystemFile.getContentFromFile(file);
+    let linewsWithRequire = [];
+    fileContent.map((line) => {
+        if (hasRequireToken(line)) {
+            linewsWithRequire.push(line);
+        }
+    })
+    const dependenciesFromFile = getDependenciesName(linewsWithRequire);
     return dependenciesFromFile;
 }
 
-const getDependenciesName = tokens => {
-    const importsAndRequires = tokens.filter(token => isImportOrRequire(token));
-
-    let dependencies = [];
-    importsAndRequires.map(token => {
-        if (hasStringDelimiter(token) && token.includes(REQUIRE)) {
-            const lastIndexOfQuote = getLastStringDelimiter(token);
-            const dependencysName = token.substring(9, lastIndexOfQuote);
-            dependencies.push(dependencysName);
-        } else if (hasStringDelimiter(token)) {
-            const dependencysName = token.substring(1, token.length - 2);
-            dependencies.push(dependencysName);
-        }
+const getDependenciesName = lines => {
+    let dependencies = []
+    lines.map((line) => {
+        const validRequire = getValidRequire(line);
+        validRequire ? dependencies.push(validRequire) : null;
     });
     return dependencies;
 }
 
-const getLastStringDelimiter = token => {
-    let lastIndexOfQuote = token.lastIndexOf(DOUBLE_QUOTE);
-    if (lastIndexOfQuote == -1) {
-        lastIndexOfQuote = token.lastIndexOf(SINGLE_QUOTE);
-    }
-    return lastIndexOfQuote;
+function getValidRequire(line) {
+    const tokens = line.split(" ");
+    let name = "";
+    tokens.map((token) => {
+        if (_.startsWith(token, "require")) {
+            name = _.replace(token,"require","");
+            name = _.replace(name,"(","");
+            name = _.replace(name,")","");
+            name = _.replace(name,"\"","");
+            name = _.replace(name,"\"","");
+            name = _.replace(name,";","");
+        }
+    });
+    return name;
 }
 
-const hasStringDelimiter = token => {
-    return (token.includes(SINGLE_QUOTE) || token.includes(DOUBLE_QUOTE));
+function hasRequireToken(line) {
+    return line.includes("require")
+        && line.includes("\"")
+        && line.includes("=") && line.includes("(") && line.includes(")");
 }
 
-const isImportOrRequire = token => {
-    return token.includes(IMPORT) || token.includes(DOUBLE_QUOTE) || token.includes(REQUIRE);
-}
+
 
 module.exports = {
     getDependencies
 }
+
