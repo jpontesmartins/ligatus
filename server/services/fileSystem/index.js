@@ -1,8 +1,9 @@
-const readSystemFile = require("./readFromFileSystem");
+const readFromFileSystem = require("./readFromFileSystem");
 const _ = require("lodash");
 
+//TODO: sei aqui está incompleto, foi apenas o básico para passar pelo teste
 const getDependencies = async file => {
-    const fileContent = await readSystemFile.getContentFromFile(file);
+    const fileContent = await readFromFileSystem.getContentFromFile(file);
     let linewsWithRequire = [];
     fileContent.map((line) => {
         if (hasRequireToken(line)) {
