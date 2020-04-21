@@ -59,6 +59,7 @@ class ManageDependencies {
     }
 
     getAllDependencies = async () => {
+        this.all.add(this.file);
         if (this.local.size === 0) {
             await this.getLocalDependencies();
         }

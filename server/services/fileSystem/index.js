@@ -1,15 +1,23 @@
 const readFromFileSystem = require("./readFromFileSystem");
-const _ = require("lodash");
+const _ = require('lodash');
+const example =
+require('./example.js');
+
 
 //TODO: sei aqui está incompleto, foi apenas o básico para passar pelo teste
 const getDependencies = async file => {
     const fileContent = await readFromFileSystem.getContentFromFile(file);
     let linewsWithRequire = [];
-    fileContent.map((line) => {
-        if (hasRequireToken(line)) {
-            linewsWithRequire.push(line);
+    const tokens = fileContent.split(" ");
+    tokens.map((token, i) => {
+        if (token.includes("require") && !token.includes("\"require\"")) {
+            if (tokens[i-1].includes("=")) {
+                linewsWithRequire.push(token);
+            }
         }
-    })
+    });
+
+
     const dependenciesFromFile = getDependenciesName(linewsWithRequire);
     return dependenciesFromFile;
 }
@@ -24,6 +32,18 @@ const getDependenciesName = lines => {
 }
 
 function getValidRequire(line) {
+    let name = _.replace(line, "require(", "");
+    name = _.replace(name, ")", "");
+    name = _.replace(name, ";", "");
+    name = _.replace(name, "\"", "");
+    name = _.replace(name, "\"", "");
+    name = _.replace(name, "\'", "");
+    name = _.replace(name, "\'", "");
+    return name;
+}
+
+function getValidRequire_old(line) {
+    console.log(line);
     const tokens = line.split(" ");
     let name = "";
     tokens.map((token) => {
@@ -33,6 +53,8 @@ function getValidRequire(line) {
             name = _.replace(name,")","");
             name = _.replace(name,"\"","");
             name = _.replace(name,"\"","");
+            name = _.replace(name,"\'","");
+            name = _.replace(name,"\'","");
             name = _.replace(name,";","");
         }
     });
@@ -41,11 +63,9 @@ function getValidRequire(line) {
 
 function hasRequireToken(line) {
     return line.includes("require")
-        && line.includes("\"")
+        && (line.includes("\"") || line.includes("\'"))
         && line.includes("=") && line.includes("(") && line.includes(")");
 }
-
-
 
 module.exports = {
     getDependencies

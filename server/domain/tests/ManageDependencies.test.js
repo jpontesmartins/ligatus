@@ -19,5 +19,5 @@ test('All Dependencies', async () => {
     const manageDependencies = new ManageDependencies("rootFile", service);
     const allDependencies = await manageDependencies.getAllDependencies();
 
-    expect(allDependencies.size).toBe(2);
+    expect(allDependencies.size).toBe(3);
 });
