@@ -5,18 +5,9 @@ const example =
 
 const getDependencies = async file => {
     const fileContent = await readFromFileSystem.getContentFromFile(file);
-    const linewsWithRequire = [];
     const tokens = fileContent.split(" ");
-
-    tokens.map((token, i) => {
-        if (hasRequire(token)) {
-            if (tokens[i-1].includes("=") || token.includes("=")) {
-                linewsWithRequire.push(token);
-            }
-        }
-    });
-
-    const dependenciesFromFile = getDependenciesName(linewsWithRequire);
+    const linesWithRequire = tokens.filter((token, i) => dependencyWithRequire(token, tokens, i));
+    const dependenciesFromFile = getDependenciesName(linesWithRequire);
 
     return dependenciesFromFile;
 }
@@ -30,6 +21,15 @@ const getDependenciesName = lines => {
     return dependencies;
 }
 
+
+function hasRequire(line) {
+    return line.includes("require") && !line.includes("\"require\"");
+}
+
+function dependencyWithRequire(token, tokens, i) {
+    return hasRequire(token) && (tokens[i - 1].includes("=") || token.includes("="));
+}
+
 function getValidRequire(line) {
     let name = _.replace(line, "require", "");
     name = _.replace(name, "=", "");
@@ -41,10 +41,6 @@ function getValidRequire(line) {
     name = _.replace(name, "\'", "");
     name = _.replace(name, "\'", "");
     return name;
-}
-
-function hasRequire(line) {
-    return line.includes("require") && !line.includes("\"require\"");
 }
 
 module.exports = {
