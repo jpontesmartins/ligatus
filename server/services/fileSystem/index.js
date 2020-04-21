@@ -10,20 +10,14 @@ const getDependencies = async file => {
 
     tokens.map((token, i) => {
         if (hasRequire(token)) {
-
             if (tokens[i-1].includes("=") || token.includes("=")) {
                 linewsWithRequire.push(token);
-            }
-
-            if (tokens[i+1]) {
-                if (tokens[i+1].includes("\"")) {
-                    linewsWithRequire.push(tokens[i+1]);
-                }
             }
         }
     });
 
     const dependenciesFromFile = getDependenciesName(linewsWithRequire);
+
     return dependenciesFromFile;
 }
 

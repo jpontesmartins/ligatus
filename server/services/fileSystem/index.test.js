@@ -20,7 +20,7 @@ test("const a = require(\"a\") em mais de uma linha", async () => {
     const index = __dirname + "/index.js";
     const dep = await fileSystem.getDependencies(index);
     const expetedArrayOfDependencies = [ './readFromFileSystem', 'lodash', './example.js'];
-    
+
     expect(dep).toEqual(expect.arrayContaining(expetedArrayOfDependencies));
 });
 
