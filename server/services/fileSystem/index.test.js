@@ -26,7 +26,6 @@ test("const a = require(\"a\") em mais de uma linha", async () => {
 
 // TODO
 // testes com:
-// const a = require( 'a'); espaços
 // import a from "a" imports;
 // import a from 'a' imports aspas simples;
 // import a from "a" imports aspas duplas;
