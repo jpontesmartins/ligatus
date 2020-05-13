@@ -1,5 +1,5 @@
 class ManageGraph {
-    
+
     constructor(manageDependencies) {
         this.file = manageDependencies.file,
         this.manageDependencies = manageDependencies
@@ -10,15 +10,22 @@ class ManageGraph {
     }
 
     create = async () => {
-        const locals = await this.manageDependencies.getLocalDependencies();
-        const all = this.manageDependencies.getAllDependencies();
-        this.generateNodes(all);
-
-        locals.forEach(localDependency => {
-            const from = this.nodes.get(localDependency.file);
-            const to = this.generateEdgesListFromFile(localDependency);
-            this.generateJsonEdges(to, from);
-        });
+        let locals;
+        let all;
+        try {
+            locals = await this.manageDependencies.getLocalDependencies();
+            all = await this.manageDependencies.getAllDependencies();
+            this.generateNodes(all);
+        } catch (error) {
+            console.log(error);
+        }
+        if (locals){
+            locals.forEach(localDependency => {
+                const from = this.nodes.get(localDependency.file);
+                const to = this.generateEdgesListFromFile(localDependency);
+                this.generateJsonEdges(to, from);
+            });
+        }
 
         this.graph = {
             nodes: this.generateJsonNodes(),
@@ -26,6 +33,7 @@ class ManageGraph {
         };
 
         return this.graph;
+
     }
 
     generateJsonEdges(to, from) {
@@ -51,7 +59,7 @@ class ManageGraph {
         this.nodes.forEach((nodeId, key) => {
             const graphNode = {
                 id: nodeId,
-                label: key,
+                label: this.label(key),
                 shape: "image",
                 image: "https://cdn.discordapp.com/attachments/253635650870444032/650688296183136270/unknown.png"
             };
@@ -60,10 +68,16 @@ class ManageGraph {
         return graphNodes;
     }
 
+    label(key) {
+        const path = this.file.slice(0,this.file.lastIndexOf("/"));
+        return "." + key.replace(path,"");
+    }
+
     generateNodes(all) {
         this.nodes = new Map();
         this.nodes.set(this.file, 1);
         let nodeKey = 2;
+
         all.forEach(dep => {
             this.nodes.set(dep, nodeKey);
             nodeKey++;
@@ -72,4 +86,6 @@ class ManageGraph {
 }
 
 module.exports = ManageGraph;
+
+
 

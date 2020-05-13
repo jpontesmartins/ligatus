@@ -58,18 +58,14 @@ class ManageDependencies {
         return filenameWithPath;
     }
 
-    getAllDependencies = () => {
+    getAllDependencies = async () => {
+        this.all.add(this.file);
+        if (this.local.size === 0) {
+            await this.getLocalDependencies();
+        }
         this.local.forEach(localDependency => {
             localDependency.dependencies.map(dep => {
-                let filenameWithPath = "";
-                if (this.isLocalFile(dep)) {
-                    const dir = path.dirname(localDependency.file);
-                    filenameWithPath = `${dir}${dep.replace("./", "/")}`;
-                    this.all.add(filenameWithPath);
-                }
-                else {
-                    this.all.add(dep);
-                }
+                this.all.add(dep);
             });
         });
         return this.all;
