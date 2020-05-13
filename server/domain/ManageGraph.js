@@ -2,7 +2,7 @@ class ManageGraph {
 
     constructor(manageDependencies) {
         this.file = manageDependencies.file,
-            this.manageDependencies = manageDependencies
+        this.manageDependencies = manageDependencies
 
         this.nodes = new Map();
         this.edges = [];
@@ -59,13 +59,18 @@ class ManageGraph {
         this.nodes.forEach((nodeId, key) => {
             const graphNode = {
                 id: nodeId,
-                label: key,
+                label: this.label(key),
                 shape: "image",
                 image: "https://cdn.discordapp.com/attachments/253635650870444032/650688296183136270/unknown.png"
             };
             graphNodes.push(graphNode);
         });
         return graphNodes;
+    }
+
+    label(key) {
+        const path = this.file.slice(0,this.file.lastIndexOf("/"));
+        return "." + key.replace(path,"");
     }
 
     generateNodes(all) {
@@ -81,4 +86,6 @@ class ManageGraph {
 }
 
 module.exports = ManageGraph;
+
+
 
