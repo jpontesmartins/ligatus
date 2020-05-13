@@ -19,11 +19,13 @@ class ManageGraph {
         } catch (error) {
             console.log(error);
         }
-        locals.forEach(localDependency => {
-            const from = this.nodes.get(localDependency.file);
-            const to = this.generateEdgesListFromFile(localDependency);
-            this.generateJsonEdges(to, from);
-        });
+        if (locals){
+            locals.forEach(localDependency => {
+                const from = this.nodes.get(localDependency.file);
+                const to = this.generateEdgesListFromFile(localDependency);
+                this.generateJsonEdges(to, from);
+            });
+        }
 
         this.graph = {
             nodes: this.generateJsonNodes(),

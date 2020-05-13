@@ -14,6 +14,8 @@ app.use(cors());
 app.get('/graph', async (req, res) => {
     // const inputDoUsuario = `${__dirname}/domain/tests/demo2.txt`;
     const inputDoUsuario = `/home/ovelha/projetos/calculadora/index.js`;
+    // const inputDoUsuario = `/home/ovelha/dev/quarentena/pestis/server/server.js`;
+    
     // console.log(inputDoUsuario);
 
     const graph = await gateway.getGraph(inputDoUsuario);

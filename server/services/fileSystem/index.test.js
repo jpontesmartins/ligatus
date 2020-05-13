@@ -23,11 +23,3 @@ test("const a = require(\"a\") em mais de uma linha", async () => {
 
     expect(dep).toEqual(expect.arrayContaining(expetedArrayOfDependencies));
 });
-
-// TODO
-// testes com:
-// import a from "a" imports;
-// import a from 'a' imports aspas simples;
-// import a from "a" imports aspas duplas;
-// import a from "a" imports em mais de uma linha;
-// evitar que o require seja um falso positivo: estando dentro de uma String, por exemplo

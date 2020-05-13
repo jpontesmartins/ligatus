@@ -3,8 +3,13 @@ const _ =require('lodash');
 const example =
     require('./example.js');
 
-const getDependencies = async file => {
+module.exports.getDependencies = async file => {
     const fileContent = await readFromFileSystem.getContentFromFile(file);
+    if (!fileContent){
+        console.log("nao retornar nada");
+         return [];
+    }
+
     const tokens = fileContent.split(" ");
     const linesWithRequire = tokens.filter((token, i) => dependencyWithRequire(token, tokens, i));
     const dependenciesFromFile = getDependenciesName(linesWithRequire);
@@ -41,9 +46,5 @@ function getValidRequire(line) {
     name = _.replace(name, "\'", "");
     name = _.replace(name, "\'", "");
     return name;
-}
-
-module.exports = {
-    getDependencies
 }
 
