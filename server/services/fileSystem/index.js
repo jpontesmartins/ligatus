@@ -1,10 +1,10 @@
-const readFromFileSystem = require("./readFromFileSystem");
+const fromFileSystem = require("./readFromFileSystem");
 const _ =require('lodash');
 const example =
     require('./example.js');
 
 module.exports.getDependencies = async file => {
-    const fileContent = await readFromFileSystem.getContentFromFile(file);
+    const fileContent = await fromFileSystem.getContentFromFile(withExtension(file));
     if (!fileContent) 
         return [];
 
@@ -16,10 +16,19 @@ module.exports.getDependencies = async file => {
 const getDependenciesFromFile = lines => {
     const dependencies = []
     lines.map((line) => {
-        const dependency = getNameFrom(line); //e esse nome de metodo, com o from..?
-        dependency ? dependencies.push(dependency) : null;
+        let dependency = getNameFrom(line); //e esse nome de metodo, com o from..?
+        if (dependency) 
+            dependencies.push(withExtension(dependency))
+        
     });
     return dependencies;
+}
+
+function withExtension(dependency) {
+    if (!dependency.includes(".")) {
+        dependency = dependency + ".js";
+    }
+    return dependency;
 }
 
 //esses 3 parametros sendo passados ficaram estranhos..

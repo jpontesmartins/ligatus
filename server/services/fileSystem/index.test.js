@@ -3,6 +3,10 @@ const fileSystem = require("../fileSystem");
 //isolar or testes, eles estão dependentes do arquivo index.js
 
 
+test('should return ', ()=> {
+});
+
+
 test('should return empty array if file has no content', async () => {
     const index = __dirname + "/example.js";
     const dep = await fileSystem.getDependencies(index);
