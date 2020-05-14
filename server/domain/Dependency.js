@@ -13,14 +13,10 @@ class Dependency {
         return dependency.includes("./");
     }
 
-    getDep = () => {
-        return this.dependencies;
-    }
-
     fillLocalDependenciesWithFullPath(dependencies, file) {
         const dependenciesWithFullPath = [];
         dependencies.map(dep => {
-            if (this.isLocalFile(dep)) {
+            if (dep.includes("./")) {
                 const fullnameFile = `${path.dirname(file)}${dep.replace("./", "/")}`;
                 dependenciesWithFullPath.push(fullnameFile);
             } else {

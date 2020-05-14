@@ -6,6 +6,8 @@ Mostra um grafo de dependências a partir de um arquivo inicial.
 # Próximos passos
 - Melhorar testes
 - Usar nos meus projetos
+- Reconhecer automaticamente extensão quando não informada (JS, JSX);
+- 
 
 # Instalação
 
