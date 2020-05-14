@@ -31,10 +31,8 @@ class ManageDependencies {
 
     getDependenciesFromFile = async (file) => {
         const dependencies = await this.service.getDependencies(file);
-        dependencies.map(d => {
-            if (this.isLocalFile(d)) {
-                this.dependencies.push(d);
-            }
+        dependencies.map(dependency => {
+            if (this.isLocalFile(dependency)) this.dependencies.push(dependency);
         });
         return dependencies;
     }

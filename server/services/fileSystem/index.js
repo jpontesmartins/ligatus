@@ -5,37 +5,29 @@ const example =
 
 module.exports.getDependencies = async file => {
     const fileContent = await readFromFileSystem.getContentFromFile(file);
-    if (!fileContent){
-         return [];
-    }
+    if (!fileContent) 
+        return [];
 
     const tokens = fileContent.split(" "); //nao gostei, está em outro nivel de abstração..
-    const linesWithRequire = tokens.filter((token, positionInCode) => dependencyWithRequire(token, tokens, positionInCode));
-    const dependenciesFromFile = getDependenciesName(linesWithRequire);
-
-    return dependenciesFromFile;
+    const lines = tokens.filter((token, positionInCode) => withRequire(token, tokens, positionInCode));
+    return getDependenciesFromFile(lines);
 }
 
-const getDependenciesName = lines => {
+const getDependenciesFromFile = lines => {
     const dependencies = []
     lines.map((line) => {
-        const require = getRequireFrom(line); //e esse nome de metodo, com o from..?
-        require ? dependencies.push(require) : null;
+        const dependency = getNameFrom(line); //e esse nome de metodo, com o from..?
+        dependency ? dependencies.push(dependency) : null;
     });
     return dependencies;
 }
 
-
-function hasRequire(line) {
-    return line.includes("require") && !line.includes("\"require\"");
-}
-
 //esses 3 parametros sendo passados ficaram estranhos..
-function dependencyWithRequire(token, tokens, i) {
-    return hasRequire(token) && (tokens[i - 1].includes("=") || token.includes("="));
+function withRequire(token, tokens, i) {
+    return token.includes("require") && !token.includes("\"require\"") && (tokens[i - 1].includes("=") || token.includes("="));
 }
 
-function getRequireFrom(line) {
+function getNameFrom(line) {
     let name = _.replace(line, "require", "");
     name = _.replace(name, "=", "");
     name = _.replace(name, "(", "");
